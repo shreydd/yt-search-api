@@ -9,6 +9,7 @@ const port = process.env.PORT;
 const http = require("http");
 const server = http.Server(app);
 
+// TODO: error handling
 const getSearchSuggestions = async(query) => {
     const data = await fetch('https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q='+query)
     const json = await data.json()
@@ -26,11 +27,12 @@ app.get("/", function (req, res) {
     res.send("Hello Express");
 });
 
+// needs error handling
 app.get("/search", async (req, res) => {
-    let query = req.query.v
+    let query = req.query.q
     let suggestions = await getSearchSuggestions(query);
     console.log(suggestions)
-    res.status(200).json({"data": suggestions});
+    res.status(200).json(suggestions);
 })
 
 server.listen(port, () => {
